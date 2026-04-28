@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import com.github.mdutka5.simplifiedstockmarket.model.AuditLog;
 import org.springframework.stereotype.Service;
 import com.github.mdutka5.simplifiedstockmarket.repository.AuditLogRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public class AuditLogService {
     private final AuditLogRepository auditLogRepository;
 
+    @Transactional
     public void logActivity(String type, String walletId, String stockName) {
         auditLogRepository.save(
                 AuditLog.builder()
@@ -22,6 +24,7 @@ public class AuditLogService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<AuditLog> getAllLogs() {
         return auditLogRepository.findAll();
     }
