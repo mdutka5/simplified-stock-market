@@ -1,5 +1,7 @@
 package com.github.mdutka5.simplifiedstockmarket.service;
 
+import com.github.mdutka5.simplifiedstockmarket.dto.response.AuditEntryResponse;
+import com.github.mdutka5.simplifiedstockmarket.dto.response.AuditLogResponse;
 import lombok.RequiredArgsConstructor;
 import com.github.mdutka5.simplifiedstockmarket.model.AuditLog;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,18 @@ public class AuditLogService {
     }
 
     @Transactional(readOnly = true)
-    public List<AuditLog> getAllLogs() {
-        return auditLogRepository.findAll();
+    public AuditLogResponse getAllLogs() {
+        List<AuditLog> auditLogs = auditLogRepository.findAll();
+
+        List<AuditEntryResponse> logs = auditLogs
+                .stream()
+                .map(auditLog -> new AuditEntryResponse(
+                        auditLog.getOperationType(),
+                        auditLog.getWalletId(),
+                        auditLog.getStockName()
+                ))
+                .toList();
+
+        return new AuditLogResponse(logs);
     }
 }
