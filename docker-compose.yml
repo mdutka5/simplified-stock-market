@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: stockmarket
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  instance1:
+    build: .
+    environment:
+      DB_HOST: postgres
+      SERVER_PORT: 8081
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  instance2:
+    build: .
+    environment:
+      DB_HOST: postgres
+      SERVER_PORT: 8082
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  instance3:
+    build: .
+    environment:
+      DB_HOST: postgres
+      SERVER_PORT: 8083
+    depends_on:
+      postgres:
