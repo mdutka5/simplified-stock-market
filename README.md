@@ -179,6 +179,7 @@ docker compose ps
 - Java 21
 - Spring Boot 3.4.5
 - PostgreSQL 16
+- Spring Data JPA + Hibernate
 - Nginx
 - Docker + Docker Compose
 - JUnit 5
